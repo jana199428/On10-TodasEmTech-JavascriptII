@@ -52,4 +52,81 @@ let books = [
         author: "Glenn Block, et al.",
         published: "2014-04-07T00:00:00.000Z",
     }
+
+
+ 
+    function addLivros() {
+ 
+        books.map((book) => {
+            const parseSubtitle = !book.subtitle ? "-" : book.subtitle;
+            const parseData = new Date(book.published);
+            const data = parseData.setDate(parseData.getDate() + 1);
+            const dataFormatada = parseData.toLocaleDateString('pt-br');
+     
+            document.getElementById('texto').innerHTML +=
+                `
+            <tr >
+            <td> ${book.title} </td>
+            <td> ${parseSubtitle}</td>
+            <td> ${book.author}</td>
+            <td> ${book.pages}</td>
+            <td> ${dataFormatada}</td>
+            <td> ${book.isbn}</td>
+            <td><button class="delete">Remover</button></td>
+            </tr>
+            `
+        })
+    }
+     
+    addLivros();
+     
+     
+     
+    function exibirDados(event) {
+        event.preventDefault();
+     
+        let pegaTitulo = document.getElementById('title').value;
+        let pegaSubtitulo = document.getElementById('subtitle').value;
+        let pegaAuthor = document.getElementById('author').value;
+        let pegaPages = document.getElementById('pages').value;
+        let pegaDate = document.getElementById('date').value;
+        let pegaIsbn = document.getElementById('isbn').value;
+     
+     
+     
+        if (pegaTitulo === "" || pegaAuthor === "" || pegaPages === "" || pegaDate === "" || pegaIsbn === "") {
+            alert("Campo obrigatório não preenchido")
+        } else {
+            books.push({
+                isbn: pegaIsbn,
+                title: pegaTitulo,
+                author: pegaAuthor,
+                published: pegaDate,
+                subtitle: pegaSubtitulo,
+                pages: pegaPages,
+            });
+            limparCampo();
+            addLivros();
+        }
+     
+    }
+     
+    function limparCampo() {
+     
+        document.getElementById('title').value = "";
+        document.getElementById('subtitle').value = "";
+        document.getElementById('author').value = "";
+        document.getElementById('pages').value = "";
+        document.getElementById('date').value = "";
+        document.getElementById('isbn').value = "";
+     
+    }
+     
+    document.getElementById('texto').addEventListener('click', function removerLinha(event) {
+        if (event.target.className === "delete") {
+            let botao = event.target.parentElement;
+            botao.parentElement.remove();
+        }
+    })
+    
 ]
